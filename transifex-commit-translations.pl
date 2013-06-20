@@ -61,10 +61,8 @@ sub commit_if_necessary
     $filename = fileparse($pofile);
     $git->add($filename);
 
-    $message = $pofile;
-    $message =~ s/^\.\///;
-    $message =~ s/^scripts\///;
-    $message =~ s/^\.\.\///;
+    ($foo, $bar) = split(/\/locale\//, $pofile);
+    $message = "locale/" . $bar;
     $message = "Translated " . $message . " on transifex.com";
     # print "Message: '" . $message . "'\n"
     $git->commit({ message => $message });
