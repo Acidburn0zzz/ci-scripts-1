@@ -26,15 +26,18 @@ sub obtain_translator
 	    # print "'" . $_ . "'\n";
 	    $_ =~ s/^\"Last-Translator\:\s//;
 	    $_ =~ s/\\n\"//;
-	    # print "'" . $_ . "'\n";
+	    print "'" . $_ . "'\n";
 
 	    @foo = split(/[\<\>]/, $_);
 	    # print "'" . join("', '", @foo) . "'\n";
-	    if ($#foo > 0)
+	    if ($#foo > -1)
 	    {
 		$user_name = $foo[0];
 		$user_name =~ s/\s+$//g;
+	    }
 
+	    if ($#foo > 0)
+	    {
 		$user_email = $foo[1];
 
 		# Fix for polish umlaits (Sorry, Michal)
@@ -61,7 +64,9 @@ sub commit_if_necessary
     $filename = fileparse($pofile);
     $git->add($filename);
 
-    ($foo, $bar) = split(/\/locale\//, $pofile);
+    # print "blah blah - '" . $pofile . "'\n";
+    $temp = "furbl/" . $pofile;
+    ($foo, $bar) = split(/\/locale\//, $temp);
     $message = "locale/" . $bar;
     $message = "Translated " . $message . " on transifex.com";
     # print "Message: '" . $message . "'\n"
